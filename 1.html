@@ -1,0 +1,25 @@
+<html>
+<script>
+
+var a = [ 22, 6, 22];
+var b = [ 6, 22, 22 ];
+
+Array.prototype.intersection = function(a) {
+    return this.filter(function(i) {return (a.indexOf(i) > -1);});
+};
+
+function getIntersection(a, b) {
+	var c = b.slice();
+	var res = Array();
+	for (i = 0; i < a.length + 1; i++) {
+		if (c.indexOf(a[i]) > -1) {
+			res.push(a[i]);
+			c.splice(c.indexOf(a[i]), 1);
+		}
+	}
+	return res;
+}
+window.alert(getIntersection(a, b));
+
+</script>
+</html>
