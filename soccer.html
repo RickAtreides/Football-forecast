@@ -18,6 +18,7 @@
 <script language="JavaScript" src="http://yandex.st/pure/2.48/pure.min.js"></script>
 <script language="JavaScript" src="http://yandex.st/json2/2011-10-19/json2.min.js"></script>
 <script language="JavaScript" src="http://yandex.st/jquery/1.4.2/jquery.min.js"></script>
+<script language="JavaScript" src="obj-Ajax.js"></script>
  
 <script>
 
@@ -28,9 +29,10 @@ function ArrayIndexOf(a, fnc) {
 	return -1;
 }
 
-function initAll() {
+function onDataLoaded(obj) {
+	var res = JSON.parse(obj.responseText);
 	var jobj = { tour : [] };
-	var i, j;
+	
 	teamsId = ArrayIndexOf(res.results, function(obj) { return obj.action == 'getteams'; });
 	if (teamsId > -1) { jobj.teams = res.results[teamsId].results };
 	betsId = ArrayIndexOf(res.results, function(obj) { return obj.action == 'getbets'; });
@@ -90,6 +92,19 @@ function initAll() {
 	
 	score_rfn = $p ( '#ManagerResultsTable' ).compile(ManagerResultsTable_tmpl);
 	$p ( '#ManagerResultsTable' ).render( jobj, score_rfn );
+
+}
+
+function initAll() {
+	var i, j;
+	
+	new AjaxRequest(new AjaxObj("/soccer/scores.php", JSON.stringify(
+		{ "requests" : [ { "action" : "getteams" },
+						 { "action" : "getplayers" },
+						 { "action" : "getbets", "season" : "2012/2013" },
+						 { "action" : "getresults", "season" : "2012/2013" },
+						]
+		}), null), "POST", onDataLoaded);
 }
 </script>
 </head>

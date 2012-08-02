@@ -12,9 +12,13 @@
 
 	// getresults
 
-	$request = '{ "requests" : [ { "action" : "getteams" }, { "action" : "getbets", "season" : "2012/2013" }, { "action" : "getresults", "season" : "2012/2013" } ] }';
+	//$request = '{ "requests" : [ { "action" : "getteams" }, { "action" : "getbets", "season" : "2012/2013" }, { "action" : "getresults", "season" : "2012/2013" } ] }';
 	//$request = '{ "requests" : [ { "action" : "getteams" } ] }';
-
+	
+	// Get raw POST data
+	$request = file_get_contents('php://input');
+	
+	
 	$req = json_decode( $request );
 	
 	$JSON = [ 'status' => 0, 'results' => Array() ];
@@ -23,14 +27,17 @@
 		if ($action->action == 'getbets') {
 			$t = getBets($db, $action->season);
 			array_push ( $JSON['results'], [ 'action' => $action->action, 'status' => 0, 'results' => $t ] );
-		}
-		if ($action->action == 'getresults') {
+		} else if ($action->action == 'getresults') {
 			$t = getResults($db, $action->season);
 			array_push ( $JSON['results'], [ 'action' => $action->action, 'status' => 0, 'results' => $t ] );
-		}
-		if ($action->action == 'getteams') {
+		} else if ($action->action == 'getteams') {
 			$t = getTeams($db);
 			array_push ( $JSON['results'], [ 'action' => $action->action, 'status' => 0, 'results' => $t ] );
+		} else if ($action->action == 'getplayers') {
+			$t = getPlayers($db);
+			array_push ( $JSON['results'], [ 'action' => $action->action, 'status' => 0, 'results' => $t ] );
+		} else {
+			array_push ( $JSON['results'], [ 'action' => $action->action, 'status' => 1, 'results' => 'Unknown Action' ] );
 		}
 	}
 
@@ -39,6 +46,20 @@
 
 	function getTeams($db) {
 		$stmt = $db->prepare("SELECT * FROM ManagerTeams");
+		$res = $stmt->execute();
+		
+		$resArray = Array();
+		
+		while ($row = $res->fetchArray(SQLITE3_ASSOC)) {
+			foreach ($row as $k => $v) { $row[$k] =  iconv('windows-1251', 'utf-8', $v); }
+			array_push($resArray, $row);
+		}	
+		
+		return $resArray;
+	}
+
+	function getPlayers($db) {
+		$stmt = $db->prepare("SELECT * FROM ZenitTeam");
 		$res = $stmt->execute();
 		
 		$resArray = Array();
