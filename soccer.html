@@ -29,6 +29,8 @@ function ArrayIndexOf(a, fnc) {
 	return -1;
 }
 
+var hint;
+
 function onDataLoaded(obj) {
 	var res = JSON.parse(obj.responseText);
 	var jobj = { tour : [] };
@@ -92,7 +94,6 @@ function onDataLoaded(obj) {
 	
 	score_rfn = $p ( '#ManagerResultsTable' ).compile(ManagerResultsTable_tmpl);
 	$p ( '#ManagerResultsTable' ).render( jobj, score_rfn );
-
 }
 
 function initAll() {
@@ -105,7 +106,36 @@ function initAll() {
 						 { "action" : "getresults", "season" : "2012/2013" },
 						]
 		}), null), "POST", onDataLoaded);
+		
+	hint = document.getElementById("hint");
 }
+
+function showHint(obj, tour, team) {
+	var pos = findPos(obj);
+	hint.style.left = (+pos.left) + 'px';
+	hint.style.top = (+obj.clientHeight + +pos.top) + 'px';
+	hint.innerHTML = 
+	hint.style.display = 'inline';
+}
+
+function hideHint(obj) {
+	hint.style.display = 'none';
+}
+
+function findPos(obj) {
+	var curleft = curtop = 0;
+	if (obj.offsetParent) {
+		do {
+				curleft += obj.offsetLeft;
+				curtop += obj.offsetTop;
+		} while (obj = obj.offsetParent);
+		return { left : curleft, top : curtop };
+	}
+	return { left : 0, top : 0 };
+}
+
+
+
 </script>
 </head>
 <body onload="initAll();">
@@ -131,8 +161,10 @@ function initAll() {
 						"tourTeam <- tour.team" : {
 							"span.Score" : {
 								"score <- tourTeam.scores" : {
-									"." : function (arg) { return arg.item ? arg.item : 0; },
-									".@class+" : function (arg) { return (arg.tourTeam.pos == arg.tourTeam.items.length - 1) && (arg.tour.pos < arg.tour.items.length - 2) ? ' gameResult' : ''; }
+									"." : function (arg) { return arg.item ? arg.item.value : 0; },
+									".@class+" : function (arg) { return (arg.tourTeam.pos == arg.tourTeam.items.length - 1) && (arg.tour.pos < arg.tour.items.length - 2) ? ' gameResult' : ''; },
+									".@onmouseover" : function (arg) { return "showHint(this, " + arg.tour.pos + "," + arg.tourTeam.pos + );" },
+									".@onmouseout"  : function (arg) { return "hideHint(this);" }
 								}
 							}
 						}
@@ -203,6 +235,18 @@ function initAll() {
 			background: none repeat scroll 0 0 #EFF2FF;
 			color: #333399;
 		}
+		
+		.hint {
+			display: none;
+			position: absolute;
+			top: 0px;
+			left: 0px;
+			width: 200px;
+			border: 1px solid #c93;
+			padding: 10px 12px;
+			background: #ffc url(pointer.gif) no-repeat -10px 5px;
+		}
+
 	</style>
 	<div id="ManagerResultsTable">
 		<table id="one-column-emphasis">
@@ -221,5 +265,6 @@ function initAll() {
 			</tbody>
 		</table>
 	</div>
+	<span id="hint" class="hint"></span>
 </body>
 </html>
