@@ -1,11 +1,13 @@
- <?php
+<?php
 	// on request, validate session_id and time expiration
 	// get authid from db
 	// else return { status : 403 }
  
 	// request { action : 'getbets', season : '2012/2013' }
 	//         { action : 'getresults', season : '2012/2013' }
-	$db = new SQLite3('C:\Users\rbesyad1\Documents\soccer\champ.s3db');
+
+//	$db = new SQLite3('C:\Users\rbesyad1\Documents\soccer\champ.s3db');
+	$db = new SQLite3('champ.s3db');
 	
 	// get bets
 	//$stmt = $db->prepare("SELECT * FROM Bets Where Season = :season");
@@ -17,8 +19,6 @@
 	
 	// Get raw POST data
 	$request = file_get_contents('php://input');
-	
-	
 	$req = json_decode( $request );
 	
 	$JSON = [ 'status' => 0, 'results' => Array() ];
@@ -105,5 +105,4 @@
 		
 		return $resArray;
 	}
-	
 ?> 
