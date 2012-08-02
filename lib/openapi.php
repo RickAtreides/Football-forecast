@@ -1,7 +1,7 @@
 <?php
 
 define ('VK_APP_ID', 'vk_app_3055016');
-define ('VK_APP_PASSWORD', 'VVd3W35yqmyPvrKwSTxz');
+define ('VK_APP_PASSWORD', '');
 
 class Auth_Vkontakte {
 
