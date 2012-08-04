@@ -1,8 +1,14 @@
 <html>
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+<script language="JavaScript" src="http://yandex.st/pure/2.48/pure.min.js"></script>
+
 <script>
 
 var a = [ 22, 6, 22];
 var b = [ 6, 22, 22 ];
+
+var res = {"status":0,"results":[{"action":"getteams","status":0,"results":[{"id":"1","Name":"Хозяиновы","authId":"","sessionId":"","logonTime":""},{"id":"2","Name":"Виталик Шимко","authId":"","sessionId":"","logonTime":""},{"id":"3","Name":"Нефёдовы","authId":"","sessionId":"","logonTime":""},{"id":"4","Name":"Бесядовские","authId":"","sessionId":"","logonTime":""},{"id":"5","Name":"Сибиряковы","authId":"","sessionId":"","logonTime":""}]},{"action":"getplayers","status":0,"results":[{"id":"1","Num":"16","Name":"Вячеслав Малафеев","orign":"Россия","amplua":"Вратарь"},{"id":"2","Num":"22","Name":"Дмитрий Бородин","orign":"Россия","amplua":"Вратарь"},{"id":"3","Num":"30","Name":"Юрий Жевнов","orign":"Беларусь","amplua":"Вратарь"},{"id":"4","Num":"2","Name":"Александр Анюков","orign":"Россия","amplua":"Защитник"},{"id":"5","Num":"3","Name":"Бруну Алвеш","orign":"Португалия","amplua":"Защитник"},{"id":"6","Num":"4","Name":"Доменико Кришито","orign":"Италия","amplua":"Защитник"},{"id":"7","Num":"6","Name":"Николас Ломбертс","orign":"Бельгия","amplua":"Защитник"},{"id":"8","Num":"14","Name":"Томаш Губочан","orign":"Словакия","amplua":"Защитник"},{"id":"9","Num":"24","Name":"Александар Лукович","orign":"Сербия","amplua":"Защитник"},{"id":"10","Num":"28","Name":"Микаэль Лумб","orign":"Дания","amplua":"Защитник"},{"id":"11","Num":"50","Name":"Игорь Чеминава","orign":"Россия","amplua":"Защитник"},{"id":"12","Num":"10","Name":"Мигель Данни","orign":"Португалия","amplua":"Полузащитник"},{"id":"13","Num":"15","Name":"Роман Широков","orign":"Россия","amplua":"Полузащитник"},{"id":"14","Num":"17","Name":"Алессандро Розина","orign":"Италия","amplua":"Полузащитник"},{"id":"15","Num":"18","Name":"Константин Зырянов","orign":"Россия","amplua":"Полузащитник"},{"id":"16","Num":"20","Name":"Виктор Файзулин","orign":"Россия","amplua":"Полузащитник"},{"id":"17","Num":"25","Name":"Сергей Семак","orign":"Россия","amplua":"Полузащитник"},{"id":"18","Num":"27","Name":"Игорь Денисов","orign":"Россия","amplua":"Полузащитник"},{"id":"19","Num":"34","Name":"Владимир Быстров","orign":"Россия","amplua":"Полузащитник"},{"id":"20","Num":"8","Name":"Данко Лазович","orign":"Сербия","amplua":"Нападающий"},{"id":"21","Num":"9","Name":"Александр Бухаров","orign":"Россия","amplua":"Нападающий"},{"id":"22","Num":"11","Name":"Александр Кержаков","orign":"Россия","amplua":"Нападающий"},{"id":"23","Num":"77","Name":"Лука Джорджевич","orign":"Черногория","amplua":"Нападающий"},{"id":"24","Num":"99","Name":"Максим Канунников","orign":"Россия","amplua":"Нападающий"}]},{"action":"getbets","status":0,"results":[{"id":"1","Season":"2012\/2013","Tour":"1","Team":"4","GoalAccepted":"1","GoalScored":["22","22","22"]},{"id":"2","Season":"2012\/2013","Tour":"1","Team":"5","GoalAccepted":"0","GoalScored":["22","6"]},{"id":"3","Season":"2012\/2013","Tour":"2","Team":"4","GoalAccepted":"0","GoalScored":["22"]},{"id":"4","Season":"2012\/2013","Tour":"2","Team":"5","GoalAccepted":"0","GoalScored":["22","22"]}]},{"action":"getresults","status":0,"results":[{"id":"1","Season":"2012\/2013","Tour":"1","GameTime":"2012-07-22 15:00:00","Opponent":"Амкар","HomeAway":"H","GoalAccepted":"0","GoalScored":["22","22"]},{"id":"2","Season":"2012\/2013","Tour":"2","GameTime":"2012-07-28 13:30:00","Opponent":"Динамо","HomeAway":"H","GoalAccepted":"0","GoalScored":["22","6"]}]}]} ;
 
 Array.prototype.intersection = function(a) {
     return this.filter(function(i) {return (a.indexOf(i) > -1);});
@@ -19,7 +25,159 @@ function getIntersection(a, b) {
 	}
 	return res;
 }
-window.alert(getIntersection(a, b));
 
+function findPos(obj) {
+	var curleft = curtop = 0;
+	if (obj.offsetParent) {
+		do {
+				curleft += obj.offsetLeft;
+				curtop += obj.offsetTop;
+		} while (obj = obj.offsetParent);
+		return { left : curleft, top : curtop };
+	}
+	return { left : 0, top : 0 };
+}
+
+function ArrayIndexOf(a, fnc) {
+	if (!fnc || typeof (fnc) != 'function') { return -1; }
+	if (!a || !a.length || a.length < 1) return -1;
+	for (var i = 0; i < a.length; i++) { if (fnc(a[i])) return i; }
+	return -1;
+}
+
+
+function choosePlayerBox(obj) {
+
+	var pos = findPos(obj);
+	playersId = ArrayIndexOf(res.results, function(obj) { return obj.action == 'getplayers'; });
+
+	var data = {                           
+		"div.player" : {
+			"person <- results" : {
+				"." : "person.Name",
+				".@onClick" : function(arg) { return "setChoosenPlayer(" + arg.pos + ");" }
+			}
+		}
+	};
+
+	$p( "#choosePlayer" ).render(res.results[playersId], data);
+
+	var  box = document.getElementById("choosePlayer");
+
+	box.style.left = +pos.left + +obj.offsetWidth + "px";
+	box.style.top = +pos.top + "px";
+	box.style.visibility = "block";
+}
+
+function changeBetPlayersList(obj) {
+	if (obj.value < 0) { obj.value = 0; }
+	if (obj.value > 15) { window.alert("Смешно!"); obj.value = 15; }
+
+	var betPlayersObj = document.getElementById("betPlayers");
+	var subDivs = betPlayersObj.getElementsByTagName("DIV");
+
+	for (var i = subDivs.length; i< obj.value; i++) {
+		var d = document.createElement("DIV");
+		d.className = "scorePlayer undefined";
+		d.innerHTML = "Click для выбора игрока";	
+		d.onclick = function() { choosePlayerBox(d); }
+		d.data = { id : 0 };
+		betPlayersObj.appendChild(d);
+	}
+
+	var subDivs = betPlayersObj.getElementsByTagName("DIV");
+
+	for (var i = subDivs.length; i > obj.value; i--) {
+		betPlayersObj.removeChild(subDivs[i-1]);
+	}
+}
+
+function init() {
+  	//choosePlayerBox(document.getElementById("betPlayers"));
+};
 </script>
+
+</head>
+<bodY onLoad="init();">
+<style>
+.BetDiv {
+    background-color: #CFCFCF;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    border-radius: 3px 3px 3px 3px;
+    font-size: 13px;
+    font-family: Verdana;
+    line-height: 14px;
+    margin: 0 0 1em;
+    overflow: hidden;
+    padding: 10px;
+    position: relative;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 260px;
+}
+
+.gameTour {
+}
+
+.gameDate {
+	float: right;
+}
+
+.scoreInput {
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    border-radius: 3px 3px 3px 3px;
+    font-size: 32px;
+    width: 120px;
+    height: 50px;
+    font-wight: bold;
+    font-family: Verdana;
+    text-align: center;
+}
+
+.scorePlayer {
+    vertical-align: middle;
+    margin: 2px 0px 2px 0px;
+    border: 1px solid rgba(0, 0, 0, 0.5);
+    border-radius: 3px 3px 3px 3px;
+    padding: 3px;
+}
+
+.scorePlayer.undefined {
+    color: rgba(0, 0, 0, 0.5);
+}
+
+.choosePlayer {
+    position: absolute;
+    visibility: none;
+}
+
+</style>
+
+
+<div class="BetDiv">
+	<table border=0>
+		<tr>
+			<td colspan="2"><span class="gameDate">04.08.2012 13:30</span><span class="gameTour">Тур 4</span></td>
+		</tr>
+		<tr>
+			<td><img src="http://img.championat.com/team/logo/12808411931795415424_cska.jpg"></td>
+			<td><img src="http://img.championat.com/team/logo/1280842143375458742_zenit.jpg"></td>
+		</tr>
+		<tr>
+			<td><input class="scoreInput" name="home" value="0" size="2" maxlength="2"></td>
+			<td><input class="scoreInput" name="away" value="2" size="2" maxlength="2" onChange="changeBetPlayersList(this)";></td>
+		</tr>
+	</table>
+
+	<div id="betPlayers">Забъют
+		<div class="scorePlayer">Кержаков</div>
+		<div class="scorePlayer">Широков</div>
+	</div>
+</div>
+
+
+<div id="choosePlayer" class="choosePlayer" style="visibility: none;">
+	<div class="player"></div>
+</div>
+</body>
 </html>
