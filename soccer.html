@@ -161,10 +161,10 @@ function findPos(obj) {
 						"tourTeam <- tour.team" : {
 							"span.Score" : {
 								"score <- tourTeam.scores" : {
-									"." : function (arg) { return arg.item ? arg.item.value : 0; },
+									"." : function (arg) { return arg.item ? arg.item : 0; },
 									".@class+" : function (arg) { return (arg.tourTeam.pos == arg.tourTeam.items.length - 1) && (arg.tour.pos < arg.tour.items.length - 2) ? ' gameResult' : ''; },
-								//	".@onmouseover" : function (arg) { return "showHint(this, " + arg.tour.pos + "," + arg.tourTeam.pos + ");" },
-								//	".@onmouseout"  : function (arg) { return "hideHint(this);" }
+									".@onmouseover" : function (arg) { return "showHint(this, " + arg.tour.pos + "," + arg.tourTeam.pos + ");" },
+									".@onmouseout"  : function (arg) { return "hideHint(this);" }
 								}
 							}
 						}
