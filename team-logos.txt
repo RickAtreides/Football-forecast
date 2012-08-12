@@ -1,0 +1,16 @@
+﻿update Championat set TeamLogo = "http://img.championat.com/team/logo/12808409991594528082_alania.jpg" where Opponent = "Алания";
+update Championat set TeamLogo = "http://img.championat.com/team/logo/12808410721160195389_amkar.jpg" where Opponent = "Амкар";
+update Championat set TeamLogo = "http://img.championat.com/team/logo/12808411201592665498_anji.jpg" where Opponent = "Анжи";
+update Championat set TeamLogo = "http://img.championat.com/team/logo/13427584201983473859_volga.jpg" where Opponent = "Волга";
+update Championat set TeamLogo = "http://img.championat.com/team/logo/128160321641163923_krasnodar.jpg" where Opponent = "Краснодар";
+update Championat set TeamLogo = "http://img.championat.com/team/logo/12808413271715560702_kc.jpg" where Opponent = "Крылья Советов";
+update Championat set TeamLogo = "http://img.championat.com/team/logo/12816032671028415352_kuban.jpg" where Opponent = "Кубань";
+update Championat set TeamLogo = "http://img.championat.com/team/logo/1280841395651117856_lokomotiv.jpg" where Opponent = "Локомотив";
+update Championat set TeamLogo = "http://img.championat.com/team/logo/12962688631628817952_mordovia.jpg" where Opponent = "Мордовия";
+update Championat set TeamLogo = "http://img.championat.com/team/logo/1280841916679538867_rostov.jpg" where Opponent = "Ростов";
+update Championat set TeamLogo = "http://img.championat.com/team/logo/13413011361438211576_rubin.jpg" where Opponent = "Рубин";
+update Championat set TeamLogo = "http://img.championat.com/team/logo/1280841622745310893_spartak.jpg" where Opponent = "Спартак";
+update Championat set TeamLogo = "http://img.championat.com/team/logo/13427586471574746678_terek.jpg" where Opponent = "Терек";
+update Championat set TeamLogo = "http://img.championat.com/team/logo/12808411931795415424_cska.jpg" where Opponent = "ЦСКА";
+update Championat set TeamLogo = "http://img.championat.com/team/logo/1280841277160247316_dinamo.jpg" where Opponent = "Динамо";
+update Championat set TeamLogo = "http://img.championat.com/team/logo/1280842143375458742_zenit.jpg" where Opponent = "Зенит";
