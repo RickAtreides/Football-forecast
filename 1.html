@@ -648,6 +648,8 @@ var res = {"status":0,"results":[{"action":"getteams","status":0,"results":[{"id
 	}]
 } ;
 
+
+var BetObj;
 	
 Array.prototype.intersection = function(a) {
     return this.filter(function(i) {return (a.indexOf(i) > -1);});
@@ -685,52 +687,76 @@ function ArrayIndexOf(a, fnc) {
 }
 
 
-function choosePlayerBox(obj) {
-
-	var pos = findPos(obj);
-	playersId = ArrayIndexOf(res.results, function(obj) { return obj.action == 'getplayers'; });
-
-	var data = {                           
-		"div.player" : {
-			"person <- results" : {
-				"." : "person.Name",
-				".@onClick" : function(arg) { return "setChoosenPlayer(" + arg.pos + ");" },
-//				".@onMouseOver" : fucntion(arg) { return "hoverPlayer();" },
-//				".@onMouseOut"  : fucntion(arg) { return "hoverPlayer();" }
-			}
-		}
-	};
-
-	$p( "#choosePlayer" ).render(res.results[playersId], data);
-
+function choosePlayerBox(obj, scorePlayerId) {
 	var  box = document.getElementById("choosePlayer");
 
-	box.style.left = +pos.left + +obj.offsetWidth + 5 + "px";
-	box.style.top = +pos.top + "px";
-	box.style.visibility = "block";
+	if (box.style.visibility == 'hidden') {
+		var pos = findPos(obj);
+		playersId = ArrayIndexOf(res.results, function(obj) { return obj.action == 'getplayers'; });
+
+		var t_funcName = function(arg, shiftId) {
+			var id = arg.pos + shiftId;
+			return arg.items[id] ? arg.items[id].Name : '';
+		}
+		var t_funcClick = function(arg, shiftId) {
+			var id = arg.pos + shiftId;
+			return arg.items[id] ? "setChoosenPlayer(" + scorePlayerId + "," + arg.items[id].id + ");" : '';
+		}
+		var t_funcAmplua = function(arg, shiftId) {
+			var id = arg.pos + shiftId;
+			if (arg.items[id]) {
+				if (arg.items[id].amplua == 'Вратарь') { return ' amplua_1'; }
+				if (arg.items[id].amplua == 'Защитник') { return ' amplua_2'; }
+				if (arg.items[id].amplua == 'Полузащитник') { return ' amplua_3'; }
+				if (arg.items[id].amplua == 'Нападающий') { return ' amplua_4'; }
+			}
+			
+			return '';
+			return arg.items[id] ? arg.items[id].Name : '';
+		}
+		
+		var choosePlayer_def = {                 
+			"div.playersRow" : {
+				"person <- results" : {
+					"div.player_col1" : function(arg) { return t_funcName(arg, 0); },
+					"div.player_col1@onclick" : function(arg) { return t_funcClick(arg, 0); },
+					"div.player_col1@class+" : function(arg) { return t_funcAmplua(arg, 0); },
+					"div.player_col2" : function(arg) { return t_funcName(arg, 1); },
+					"div.player_col2@onclick" : function(arg) { return t_funcClick(arg, 1); },
+					"div.player_col2@class+" : function(arg) { return t_funcAmplua(arg, 1); },
+					"div.player_col3" : function(arg) { return t_funcName(arg, 2); },
+					"div.player_col3@onclick" : function(arg) { return t_funcClick(arg, 2); },
+					"div.player_col3@class+" : function(arg) { return t_funcAmplua(arg, 2); },
+				},
+				filter: function(arg) {
+					return arg.pos % 3 == 0
+				}
+			}
+		};
+
+		box.innerHTML = document.getElementById("choosePlayer_tmpl").innerHTML;
+		
+		$p( "#choosePlayer" ).render(res.results[playersId], choosePlayer_def);
+
+		box = document.getElementById("choosePlayer");
+
+		box.style.left = +pos.left + +obj.offsetWidth + 5 + "px";
+		box.style.top = (pos.top > 150) ? (+pos.top - 150) + "px" : "0px";
+		box.style.visibility = "visible";
+	} else {
+		box.style.visibility = "hidden";
+	}
 }
 
+function setChoosenPlayer(scorePlayerId, playerNum) {
+	var  box = document.getElementById("choosePlayer");
+	box.style.visibility = "hidden";
+	
+	BetObj.setScorePlayer(scorePlayerId, playerNum);
+}
+	
 function changeBetPlayersList(obj) {
-	if (obj.value < 0) { obj.value = 0; }
-	if (obj.value > 15) { window.alert("Смешно!"); obj.value = 15; }
-
-	var betPlayersObj = document.getElementById("betPlayers");
-	var subDivs = betPlayersObj.getElementsByTagName("DIV");
-
-	for (var i = subDivs.length; i< obj.value; i++) {
-		var d = document.createElement("DIV");
-		d.className = "scorePlayer undefined";
-		d.innerHTML = "Click для выбора игрока";	
-		d.onclick = function() { choosePlayerBox(d); }
-		d.data = { id : 0 };
-		betPlayersObj.appendChild(d);
-	}
-
-	var subDivs = betPlayersObj.getElementsByTagName("DIV");
-
-	for (var i = subDivs.length; i > obj.value; i--) {
-		betPlayersObj.removeChild(subDivs[i-1]);
-	}
+	BetObj.setNewScore(obj.value);
 }
 
 function getObjByAction(db, action, fnc) {
@@ -741,36 +767,101 @@ function getObjByAction(db, action, fnc) {
 		if (tId > -1) { return db.results[actionId].results[tId] };
 	}
 	
-	return undef;
+	return;
 }
 
-var betObject = function() {
+var betObject = function(db, teamId, tourId) {
 	season : "";
 	team : {};
 	tour : {};
-	db : {};
+	tour : {};
+	db  : {};
+	result : {};
 	canvas : {};
-	
-	init : function(db, teamId, tourId) {
-		this.db = db;
-		var tId;
-
-		this.tour = getObjByAction(db, 'getchamp', function(obj) { return obj.Tour == tourId; });
-
-		if (teamId == 0) {
-			this.bet = false;
-			this.result = true;
-		} else {
-			this.bet = true;
-			this.result = false;
-			this.team = getObjByAction(db, 'getteams', function(obj) { return obj.id == teamId; });		
-			this.bet = getObjByAction(db, 'getbets',  function(obj) { return obj.Tour == tourId && obj.Team == teamId });
-		}
-	};
-	
-	draw : function () {
+	p_score_rfn : {};
 		
+	this.db = db;
+	var tId;
+
+	this.BetDiv_def = {
+			"span.gameDate" : "gameDate",
+			"span.gameTour" : "Тур #{gameTour}",
+			"td.homeImg img@src" : "homeImg",
+			"td.awayImg img@src" : "awayImg",
+			"td.homeScore input@value" : "goalHome",
+			"td.homeScore input@onchange" : "goalHomeOnChange",
+			"td.awayScore input@value" : "goalAway",
+			"td.awayScore input@onchange" : "goalAwayOnChange",
+			"div.scorePlayer" : {
+				"score <- scorePlayers" : {
+					"." : "score.name",
+					".@class+" : function(arg) { return (arg.item.playerNum == 0) ? " undefined" : ""; },
+					".@onclick" : "choosePlayerBox(this, #{score.id})",
+				}
+			}
 	};
+
+	this.tour = getObjByAction(db, 'getchamp', function(obj) { return obj.Tour == tourId; });
+
+	if (teamId == 0) {
+		sthis.result = true;
+	} else {
+		this.result = false;
+		this.team = getObjByAction(db, 'getteams', function(obj) { return obj.id == teamId; });		
+		this.bet = getObjByAction(db, 'getbets',  function(obj) { return obj.Tour == tourId && obj.Team == teamId });
+	}
+	
+	this.p_score_rfn = $p ( '#BetDiv' ).compile(this.BetDiv_def);
+
+	this.draw = function () {
+		var dat = {
+					gameDate : this.tour.GameTime,
+					gameTour : this.tour.Tour,
+					scorePlayers : [],
+				};
+				
+		if (this.tour.HomeAway == 'H') {
+			dat.homeImg = "http://img.championat.com/team/logo/1280842143375458742_zenit.jpg";
+			dat.awayImg = this.tour.TeamLogo;
+			dat.goalHome = this.bet.GoalScored.length;
+			dat.goalAway = this.bet.GoalAccepted;
+			dat.goalHomeOnChange = "changeBetPlayersList(this)";
+		} else {
+			dat.homeImg = this.tour.TeamLogo;
+			dat.awayImg = "http://img.championat.com/team/logo/1280842143375458742_zenit.jpg";
+			dat.goalHome = this.bet.GoalAccepted;
+			dat.goalAway = this.bet.GoalScored.length;
+			dat.goalAwayOnChange = "changeBetPlayersList(this)";
+		};
+		
+		for (i=0; i< this.bet.GoalScored.length;i++) {
+			var gscore = this.bet.GoalScored[i];
+			var player = getObjByAction(db, 'getplayers', function(obj) { return obj.id == gscore } );
+			
+			if (player) {
+				dat.scorePlayers.push( { id : i, playerNum : player.Num, name : player.Num + " " + player.Name } );
+			} else {
+				dat.scorePlayers.push( { id : i, playerNum : 0, name : "Click для выбора игрока" } );
+			}
+		}
+		
+		$p ( '#BetDiv' ).render( dat, this.p_score_rfn );
+	};
+	
+	this.setNewScore = function(goals) {
+		if (goals < 0) { goals = 0; }
+		if (goals > 15) { window.alert("Смешно!"); goals = 15; }
+		
+		this.bet.GoalScored.length = goals;
+		for (i=0; i<this.bet.GoalScored.length; i++) { if (!this.bet.GoalScored[i]) { this.bet.GoalScored[i] = 0 } }
+		
+		this.draw();
+	}
+	
+	this.setScorePlayer = function(scorePlayerId, playerNum) {
+		this.bet.GoalScored[scorePlayerId] = playerNum;
+		this.draw();
+	}
 }
 
 function init() {
@@ -797,13 +888,10 @@ function init() {
 	
 	msg.innerHTML = "";
 	msg.innerHTML += ((teamId == 0) ? "Set result" : "Bet for : " + dat.team.Name) + "<BR>";
-	msg.innerHTML += "Tour :" + tourId + "<BR>";
-	msg.innerHTML += "Opponent :" + dat.tour.Opponent + "<BR>";
-	msg.innerHTML += "GameTime :" + dat.tour.GameTime + "<BR>";
-	msg.innerHTML += "GoalAccepted :" + dat.tour.GoalAccepted + "<BR>";
-	msg.innerHTML += "GoalScored :" + dat.tour.GoalScored + "<BR>";
 
 
+	BetObj = new betObject(res, teamId, tourId);
+	BetObj.draw();
 	
 };
 </script>
@@ -864,34 +952,70 @@ function init() {
     visibility: hidden;
 }
 
+.player_col1, .player_col2, .player_col3 {
+	width: 200px;
+	float: left;
+}
+
+.player_col1:hover, .player_col2:hover, .player_col3:hover {
+	background: rgba(0, 0, 255, 0.5);
+}
+
+.amplua_1 {
+	background: rgba(255, 12, 0, 0.5);
+}
+
+.amplua_2 {
+	background: rgba(255, 128, 0, 0.5);
+}
+
+.amplua_3 {
+	background: rgba(255, 200, 0, 0.5);
+}
+
+.amplua_4 {
+	background: rgba(0, 200, 15, 0.5);
+}
+
+.clearBoth {
+	claer: both;
+}
 </style>
 
 <div id="msg"></div>
 
-<div class="BetDiv">
+<script>
+</script>
+<div id="BetDiv" class="BetDiv">
 	<table border=0>
 		<tr>
-			<td colspan="2"><span class="gameDate">04.08.2012 13:30</span><span class="gameTour">Тур 4</span></td>
+			<td colspan="2"><span class="gameDate"></span><span class="gameTour"></span></td>
 		</tr>
 		<tr>
-			<td><img src="http://img.championat.com/team/logo/12808411931795415424_cska.jpg"></td>
-			<td><img src="http://img.championat.com/team/logo/1280842143375458742_zenit.jpg"></td>
+			<td class="homeImg"><img src=""></td>
+			<td class="awayImg"><img src=""></td>
 		</tr>
 		<tr>
-			<td><input class="scoreInput" name="home" value="0" size="2" maxlength="2"></td>
-			<td><input class="scoreInput" name="away" value="2" size="2" maxlength="2" onChange="changeBetPlayersList(this)";></td>
+			<td class="homeScore"><input class="scoreInput" name="home" value="" size="2" maxlength="2"></td>
+			<td class="awayScore"><input class="scoreInput" name="away" value="" size="2" maxlength="2"></td>
 		</tr>
 	</table>
 
 	<div id="betPlayers">Забъют
-		<div class="scorePlayer">Кержаков</div>
-		<div class="scorePlayer">Широков</div>
+		<div class="scorePlayer"></div>
 	</div>
+	
+	<img src="fl-button-bet.png">
 </div>
 
-
-<div id="choosePlayer" class="choosePlayer" style="visibility: hidden;">
-	<div class="player"></div>
+<div id="choosePlayer"  class="choosePlayer" style="visibility: hidden;"></div>
+<div id="choosePlayer_tmpl" class="choosePlayer" style="visibility: hidden; position: absolute;">
+	<div class="playersRow">
+		<div class="player_col1 player"></div>
+		<div class="player_col2 player"></div>
+		<div class="player_col3 player"></div>
+		<br class="clearBoth"/>
+	</div>
 </div>
 </body>
 </html>
