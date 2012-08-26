@@ -39,6 +39,9 @@
 		} else if ($action->action == 'getplayers') {
 			$t = getPlayers($db);
 			array_push ( $JSON['results'], [ 'action' => $action->action, 'status' => 0, 'results' => $t ] );
+		} else if ($action->action == 'setbet') {
+			$t = setBet($db, $action->bet);
+			array_push ( $JSON['results'], [ 'action' => $action->action, 'status' => 0, 'results' => $t ] );							
 		} else {
 			array_push ( $JSON['results'], [ 'action' => $action->action, 'status' => 1, 'results' => 'Unknown Action' ] );
 		}
@@ -124,5 +127,45 @@
 		}	
 		
 		return $resArray;
+	}
+	
+	function setBet($db, $bet) {
+		$goals = join(";", $bet->GoalScored);
+		if ($bet->type == 'bet') {
+			if ($bet->id == 0) {
+				$stmt = $db->prepare("INSERT INTO Bets Values (null, :season, :tour, :team, :goalAccepted, :goalScored);");
+				$stmt->bindValue(':season', $bet->season, SQLITE3_TEXT);
+				$stmt->bindValue(':tour', $bet->Tour, SQLITE3_INTEGER);
+				$stmt->bindValue(':team', $bet->Team, SQLITE3_INTEGER);
+			} else {
+				$stmt = $db->prepare("UPDATE Bets SET GoalAccepted = :goalAccepted, GoalScored = :goalScored WHERE id = :id;");
+				$stmt->bindValue(':id', $bet->id, SQLITE3_INTEGER);
+			}
+			$stmt->bindValue(':goalAccepted', $bet->GoalAccepted, SQLITE3_INTEGER);
+			$stmt->bindValue(':goalScored', $goals, SQLITE3_TEXT);
+
+			$res = $stmt->execute();
+			if (!$res) {
+				return "Bet Error : " + $db->lastErrorMsg();
+			} else {
+				if ($bet->id == 0) {
+					return "Bet inserted : " + $db->lastInsertRowID();
+				} else {
+					return "Bet updated";
+				}
+			}
+		} else if ($bet->type == 'result') {
+			$stmt = $db->prepare("UPDATE Championat SET GoalAccepted = :goalAccepted, GoalScored = :goalScored WHERE id = :id;");
+			$stmt->bindValue(':id', $bet->id, SQLITE3_INTEGER);
+			$stmt->bindValue(':goalAccepted', $bet->GoalAccepted, SQLITE3_INTEGER);
+			$stmt->bindValue(':goalScored', $goals, SQLITE3_TEXT);
+
+			$res = $stmt->execute();
+			if (!$res) {
+				return "Result Error : " + $db->lastErrorMsg();
+			} else {
+				return "Result updated";
+			}
+		} 
 	}
 ?> 

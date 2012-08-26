@@ -2,653 +2,10 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
 <script language="JavaScript" src="http://yandex.st/pure/2.48/pure.min.js"></script>
-
+<script language="JavaScript" src="obj-Ajax.js"></script>
 <script>
 
-var a = [ 22, 6, 22];
-var b = [ 6, 22, 22 ];
-
-var res = {"status":0,"results":[{"action":"getteams","status":0,"results":[{"id":"1","Name":"Хозяиновы","authId":"","sessionId":"","logonTime":""},{"id":"2","Name":"Виталик Шимко","authId":"","sessionId":"","logonTime":""},{"id":"3","Name":"Нефёдовы","authId":"","sessionId":"","logonTime":""},{"id":"4","Name":"Бесядовские","authId":"","sessionId":"","logonTime":""},{"id":"5","Name":"Сибиряковы","authId":"","sessionId":"","logonTime":""}]},{"action":"getplayers","status":0,"results":[{"id":"1","Num":"16","Name":"Вячеслав Малафеев","orign":"Россия","amplua":"Вратарь"},{"id":"2","Num":"22","Name":"Дмитрий Бородин","orign":"Россия","amplua":"Вратарь"},{"id":"3","Num":"30","Name":"Юрий Жевнов","orign":"Беларусь","amplua":"Вратарь"},{"id":"4","Num":"2","Name":"Александр Анюков","orign":"Россия","amplua":"Защитник"},{"id":"5","Num":"3","Name":"Бруну Алвеш","orign":"Португалия","amplua":"Защитник"},{"id":"6","Num":"4","Name":"Доменико Кришито","orign":"Италия","amplua":"Защитник"},{"id":"7","Num":"6","Name":"Николас Ломбертс","orign":"Бельгия","amplua":"Защитник"},{"id":"8","Num":"14","Name":"Томаш Губочан","orign":"Словакия","amplua":"Защитник"},{"id":"9","Num":"24","Name":"Александар Лукович","orign":"Сербия","amplua":"Защитник"},{"id":"10","Num":"28","Name":"Микаэль Лумб","orign":"Дания","amplua":"Защитник"},{"id":"11","Num":"50","Name":"Игорь Чеминава","orign":"Россия","amplua":"Защитник"},{"id":"12","Num":"10","Name":"Мигель Данни","orign":"Португалия","amplua":"Полузащитник"},{"id":"13","Num":"15","Name":"Роман Широков","orign":"Россия","amplua":"Полузащитник"},{"id":"14","Num":"17","Name":"Алессандро Розина","orign":"Италия","amplua":"Полузащитник"},{"id":"15","Num":"18","Name":"Константин Зырянов","orign":"Россия","amplua":"Полузащитник"},{"id":"16","Num":"20","Name":"Виктор Файзулин","orign":"Россия","amplua":"Полузащитник"},{"id":"17","Num":"25","Name":"Сергей Семак","orign":"Россия","amplua":"Полузащитник"},{"id":"18","Num":"27","Name":"Игорь Денисов","orign":"Россия","amplua":"Полузащитник"},{"id":"19","Num":"34","Name":"Владимир Быстров","orign":"Россия","amplua":"Полузащитник"},{"id":"20","Num":"8","Name":"Данко Лазович","orign":"Сербия","amplua":"Нападающий"},{"id":"21","Num":"9","Name":"Александр Бухаров","orign":"Россия","amplua":"Нападающий"},{"id":"22","Num":"11","Name":"Александр Кержаков","orign":"Россия","amplua":"Нападающий"},{"id":"23","Num":"77","Name":"Лука Джорджевич","orign":"Черногория","amplua":"Нападающий"},{"id":"24","Num":"99","Name":"Максим Канунников","orign":"Россия","amplua":"Нападающий"}]},{"action":"getbets","status":0,"results":[{"id":"1","Season":"2012\/2013","Tour":"1","Team":"4","GoalAccepted":"1","GoalScored":["22","22","22"]},{"id":"2","Season":"2012\/2013","Tour":"1","Team":"5","GoalAccepted":"0","GoalScored":["22","6"]},{"id":"3","Season":"2012\/2013","Tour":"2","Team":"4","GoalAccepted":"0","GoalScored":["22"]},{"id":"4","Season":"2012\/2013","Tour":"2","Team":"5","GoalAccepted":"0","GoalScored":["22","22"]}]},{"action":"getresults","status":0,"results":[{"id":"1","Season":"2012\/2013","Tour":"1","GameTime":"2012-07-22 15:00:00","Opponent":"Амкар","HomeAway":"H","GoalAccepted":"0","GoalScored":["22","22"]},{"id":"2","Season":"2012\/2013","Tour":"2","GameTime":"2012-07-28 13:30:00","Opponent":"Динамо","HomeAway":"H","GoalAccepted":"0","GoalScored":["22","6"]}]}]} ;
-    res = {
-	"status": 0,
-	"results": [{
-		"action": "getteams",
-		"status": 0,
-		"results": [{
-			"id": "1",
-			"Name": "Хозяиновы",
-			"authId": "",
-			"sessionId": "",
-			"logonTime": ""
-		},
-		{
-			"id": "2",
-			"Name": "Виталик Шимко",
-			"authId": "",
-			"sessionId": "",
-			"logonTime": ""
-		},
-		{
-			"id": "3",
-			"Name": "Нефёдовы",
-			"authId": "",
-			"sessionId": "",
-			"logonTime": ""
-		},
-		{
-			"id": "4",
-			"Name": "Бесядовские",
-			"authId": "",
-			"sessionId": "",
-			"logonTime": ""
-		},
-		{
-			"id": "5",
-			"Name": "Сибиряковы",
-			"authId": "",
-			"sessionId": "",
-			"logonTime": ""
-		}]
-	},
-	{
-		"action": "getplayers",
-		"status": 0,
-		"results": [{
-			"id": "1",
-			"Num": "16",
-			"Name": "Вячеслав Малафеев",
-			"orign": "Россия",
-			"amplua": "Вратарь"
-		},
-		{
-			"id": "2",
-			"Num": "22",
-			"Name": "Дмитрий Бородин",
-			"orign": "Россия",
-			"amplua": "Вратарь"
-		},
-		{
-			"id": "3",
-			"Num": "30",
-			"Name": "Юрий Жевнов",
-			"orign": "Беларусь",
-			"amplua": "Вратарь"
-		},
-		{
-			"id": "4",
-			"Num": "2",
-			"Name": "Александр Анюков",
-			"orign": "Россия",
-			"amplua": "Защитник"
-		},
-		{
-			"id": "5",
-			"Num": "3",
-			"Name": "Бруну Алвеш",
-			"orign": "Португалия",
-			"amplua": "Защитник"
-		},
-		{
-			"id": "6",
-			"Num": "4",
-			"Name": "Доменико Кришито",
-			"orign": "Италия",
-			"amplua": "Защитник"
-		},
-		{
-			"id": "7",
-			"Num": "6",
-			"Name": "Николас Ломбертс",
-			"orign": "Бельгия",
-			"amplua": "Защитник"
-		},
-		{
-			"id": "8",
-			"Num": "14",
-			"Name": "Томаш Губочан",
-			"orign": "Словакия",
-			"amplua": "Защитник"
-		},
-		{
-			"id": "9",
-			"Num": "24",
-			"Name": "Александар Лукович",
-			"orign": "Сербия",
-			"amplua": "Защитник"
-		},
-		{
-			"id": "10",
-			"Num": "28",
-			"Name": "Микаэль Лумб",
-			"orign": "Дания",
-			"amplua": "Защитник"
-		},
-		{
-			"id": "11",
-			"Num": "50",
-			"Name": "Игорь Чеминава",
-			"orign": "Россия",
-			"amplua": "Защитник"
-		},
-		{
-			"id": "12",
-			"Num": "10",
-			"Name": "Мигель Данни",
-			"orign": "Португалия",
-			"amplua": "Полузащитник"
-		},
-		{
-			"id": "13",
-			"Num": "15",
-			"Name": "Роман Широков",
-			"orign": "Россия",
-			"amplua": "Полузащитник"
-		},
-		{
-			"id": "14",
-			"Num": "17",
-			"Name": "Алессандро Розина",
-			"orign": "Италия",
-			"amplua": "Полузащитник"
-		},
-		{
-			"id": "15",
-			"Num": "18",
-			"Name": "Константин Зырянов",
-			"orign": "Россия",
-			"amplua": "Полузащитник"
-		},
-		{
-			"id": "16",
-			"Num": "20",
-			"Name": "Виктор Файзулин",
-			"orign": "Россия",
-			"amplua": "Полузащитник"
-		},
-		{
-			"id": "17",
-			"Num": "25",
-			"Name": "Сергей Семак",
-			"orign": "Россия",
-			"amplua": "Полузащитник"
-		},
-		{
-			"id": "18",
-			"Num": "27",
-			"Name": "Игорь Денисов",
-			"orign": "Россия",
-			"amplua": "Полузащитник"
-		},
-		{
-			"id": "19",
-			"Num": "34",
-			"Name": "Владимир Быстров",
-			"orign": "Россия",
-			"amplua": "Полузащитник"
-		},
-		{
-			"id": "20",
-			"Num": "8",
-			"Name": "Данко Лазович",
-			"orign": "Сербия",
-			"amplua": "Нападающий"
-		},
-		{
-			"id": "21",
-			"Num": "9",
-			"Name": "Александр Бухаров",
-			"orign": "Россия",
-			"amplua": "Нападающий"
-		},
-		{
-			"id": "22",
-			"Num": "11",
-			"Name": "Александр Кержаков",
-			"orign": "Россия",
-			"amplua": "Нападающий"
-		},
-		{
-			"id": "23",
-			"Num": "77",
-			"Name": "Лука Джорджевич",
-			"orign": "Черногория",
-			"amplua": "Нападающий"
-		},
-		{
-			"id": "24",
-			"Num": "99",
-			"Name": "Максим Канунников",
-			"orign": "Россия",
-			"amplua": "Нападающий"
-		}]
-	},
-	{
-		"action": "getbets",
-		"status": 0,
-		"results": [{
-			"id": "1",
-			"Season": "2012\/2013",
-			"Tour": "1",
-			"Team": "4",
-			"GoalAccepted": "1",
-			"GoalScored": ["22","13","19"]
-		},
-		{
-			"id": "2",
-			"Season": "2012\/2013",
-			"Tour": "1",
-			"Team": "5",
-			"GoalAccepted": "0",
-			"GoalScored": ["22","6"]
-		},
-		{
-			"id": "3",
-			"Season": "2012\/2013",
-			"Tour": "2",
-			"Team": "4",
-			"GoalAccepted": "0",
-			"GoalScored": ["22"]
-		},
-		{
-			"id": "4",
-			"Season": "2012\/2013",
-			"Tour": "2",
-			"Team": "5",
-			"GoalAccepted": "0",
-			"GoalScored": ["22","22"]
-		},
-		{
-			"id": "5",
-			"Season": "2012\/2013",
-			"Tour": "1",
-			"Team": "1",
-			"GoalAccepted": "1",
-			"GoalScored": ["22"]
-		},
-		{
-			"id": "6",
-			"Season": "2012\/2013",
-			"Tour": "1",
-			"Team": "2",
-			"GoalAccepted": "0",
-			"GoalScored": ["19","13"]
-		},
-		{
-			"id": "7",
-			"Season": "2012\/2013",
-			"Tour": "1",
-			"Team": "3",
-			"GoalAccepted": "1",
-			"GoalScored": ["13","17"]
-		}]
-	},
-	{
-		"action": "getresults",
-		"status": 0,
-		"results": [{
-			"id": "1",
-			"Season": "2012\/2013",
-			"Tour": "1",
-			"GameTime": "2012-07-22 15:00:00",
-			"Opponent": "Амкар",
-			"HomeAway": "H",
-			"GoalAccepted": "0",
-			"GoalScored": ["22",
-			"22"],
-			"TeamLogo": "http:\/\/img.championat.com\/team\/logo\/12808410721160195389_amkar.jpg"
-		},
-		{
-			"id": "2",
-			"Season": "2012\/2013",
-			"Tour": "2",
-			"GameTime": "2012-07-28 13:30:00",
-			"Opponent": "Динамо",
-			"HomeAway": "H",
-			"GoalAccepted": "0",
-			"GoalScored": ["22",
-			"6"],
-			"TeamLogo": "http:\/\/img.championat.com\/team\/logo\/1280841277160247316_dinamo.jpg"
-		}]
-	},
-	{
-		"action": "getchamp",
-		"status": 0,
-		"results": [{
-			"id": "1",
-			"Season": "2012\/2013",
-			"Tour": "1",
-			"GameTime": "2012-07-22 15:00:00",
-			"Opponent": "Амкар",
-			"HomeAway": "H",
-			"GoalAccepted": "0",
-			"GoalScored": ["22",
-			"22"],
-			"TeamLogo": "http:\/\/img.championat.com\/team\/logo\/12808410721160195389_amkar.jpg"
-		},
-		{
-			"id": "2",
-			"Season": "2012\/2013",
-			"Tour": "2",
-			"GameTime": "2012-07-28 13:30:00",
-			"Opponent": "Динамо",
-			"HomeAway": "H",
-			"GoalAccepted": "0",
-			"GoalScored": ["22",
-			"6"],
-			"TeamLogo": "http:\/\/img.championat.com\/team\/logo\/1280841277160247316_dinamo.jpg"
-		},
-		{
-			"id": "3",
-			"Season": "2012\/2013",
-			"Tour": "3",
-			"GameTime": "2012-08-04 13:30:00",
-			"Opponent": "ЦСКА",
-			"HomeAway": "A",
-			"GoalAccepted": "0",
-			"GoalScored": [""],
-			"TeamLogo": "http:\/\/img.championat.com\/team\/logo\/12808411931795415424_cska.jpg"
-		},
-		{
-			"id": "4",
-			"Season": "2012\/2013",
-			"Tour": "4",
-			"GameTime": "2012-08-11 13:30:00",
-			"Opponent": "Спартак",
-			"HomeAway": "H",
-			"GoalAccepted": "0",
-			"GoalScored": [""],
-			"TeamLogo": "http:\/\/img.championat.com\/team\/logo\/1280841622745310893_spartak.jpg"
-		},
-		{
-			"id": "5",
-			"Season": "2012\/2013",
-			"Tour": "5",
-			"GameTime": "2012-08-19 21:00:00",
-			"Opponent": "Анжи",
-			"HomeAway": "A",
-			"GoalAccepted": "0",
-			"GoalScored": [""],
-			"TeamLogo": "http:\/\/img.championat.com\/team\/logo\/12808411201592665498_anji.jpg"
-		},
-		{
-			"id": "6",
-			"Season": "2012\/2013",
-			"Tour": "6",
-			"GameTime": "2012-08-25 15:15:00",
-			"Opponent": "Рубин",
-			"HomeAway": "H",
-			"GoalAccepted": "0",
-			"GoalScored": [""],
-			"TeamLogo": "http:\/\/img.championat.com\/team\/logo\/13413011361438211576_rubin.jpg"
-		},
-		{
-			"id": "7",
-			"Season": "2012\/2013",
-			"Tour": "7",
-			"GameTime": "2012-08-31 00:00:00",
-			"Opponent": "Мордовия",
-			"HomeAway": "A",
-			"GoalAccepted": "0",
-			"GoalScored": [""],
-			"TeamLogo": "http:\/\/img.championat.com\/team\/logo\/12962688631628817952_mordovia.jpg"
-		},
-		{
-			"id": "8",
-			"Season": "2012\/2013",
-			"Tour": "8",
-			"GameTime": "2012-09-15 00:00:00",
-			"Opponent": "Терек",
-			"HomeAway": "H",
-			"GoalAccepted": "0",
-			"GoalScored": [""],
-			"TeamLogo": "http:\/\/img.championat.com\/team\/logo\/13427586471574746678_terek.jpg"
-		},
-		{
-			"id": "9",
-			"Season": "2012\/2013",
-			"Tour": "9",
-			"GameTime": "2012-09-22 00:00:00",
-			"Opponent": "Крылья Советов",
-			"HomeAway": "A",
-			"GoalAccepted": "0",
-			"GoalScored": [""],
-			"TeamLogo": "http:\/\/img.championat.com\/team\/logo\/12808413271715560702_kc.jpg"
-		},
-		{
-			"id": "10",
-			"Season": "2012\/2013",
-			"Tour": "10",
-			"GameTime": "2012-09-29 00:00:00",
-			"Opponent": "Локомотив",
-			"HomeAway": "H",
-			"GoalAccepted": "0",
-			"GoalScored": [""],
-			"TeamLogo": "http:\/\/img.championat.com\/team\/logo\/1280841395651117856_lokomotiv.jpg"
-		},
-		{
-			"id": "11",
-			"Season": "2012\/2013",
-			"Tour": "11",
-			"GameTime": "2012-10-07 00:00:00",
-			"Opponent": "Краснодар",
-			"HomeAway": "A",
-			"GoalAccepted": "0",
-			"GoalScored": [""],
-			"TeamLogo": "http:\/\/img.championat.com\/team\/logo\/128160321641163923_krasnodar.jpg"
-		},
-		{
-			"id": "12",
-			"Season": "2012\/2013",
-			"Tour": "12",
-			"GameTime": "2012-10-20 00:00:00",
-			"Opponent": "Кубань",
-			"HomeAway": "H",
-			"GoalAccepted": "0",
-			"GoalScored": [""],
-			"TeamLogo": "http:\/\/img.championat.com\/team\/logo\/12816032671028415352_kuban.jpg"
-		},
-		{
-			"id": "13",
-			"Season": "2012\/2013",
-			"Tour": "13",
-			"GameTime": "2012-10-27 00:00:00",
-			"Opponent": "Алания",
-			"HomeAway": "A",
-			"GoalAccepted": "0",
-			"GoalScored": [""],
-			"TeamLogo": "http:\/\/img.championat.com\/team\/logo\/12808409991594528082_alania.jpg"
-		},
-		{
-			"id": "14",
-			"Season": "2012\/2013",
-			"Tour": "14",
-			"GameTime": "2012-11-03 00:00:00",
-			"Opponent": "Ростов",
-			"HomeAway": "H",
-			"GoalAccepted": "0",
-			"GoalScored": [""],
-			"TeamLogo": "http:\/\/img.championat.com\/team\/logo\/1280841916679538867_rostov.jpg"
-		},
-		{
-			"id": "15",
-			"Season": "2012\/2013",
-			"Tour": "15",
-			"GameTime": "2012-11-11 00:00:00",
-			"Opponent": "Волга НН",
-			"HomeAway": "A",
-			"GoalAccepted": "0",
-			"GoalScored": [""],
-			"TeamLogo": "http:\/\/img.championat.com\/team\/logo\/13427584201983473859_volga.jpg"
-		},
-		{
-			"id": "16",
-			"Season": "2012\/2013",
-			"Tour": "16",
-			"GameTime": "2012-11-17 00:00:00",
-			"Opponent": "Динамо",
-			"HomeAway": "A",
-			"GoalAccepted": "0",
-			"GoalScored": [""],
-			"TeamLogo": "http:\/\/img.championat.com\/team\/logo\/1280841277160247316_dinamo.jpg"
-		},
-		{
-			"id": "17",
-			"Season": "2012\/2013",
-			"Tour": "17",
-			"GameTime": "2012-11-26 00:00:00",
-			"Opponent": "ЦСКА",
-			"HomeAway": "H",
-			"GoalAccepted": "0",
-			"GoalScored": [""],
-			"TeamLogo": "http:\/\/img.championat.com\/team\/logo\/12808411931795415424_cska.jpg"
-		},
-		{
-			"id": "18",
-			"Season": "2012\/2013",
-			"Tour": "18",
-			"GameTime": "2012-12-01 00:00:00",
-			"Opponent": "Спартак",
-			"HomeAway": "A",
-			"GoalAccepted": "0",
-			"GoalScored": [""],
-			"TeamLogo": "http:\/\/img.championat.com\/team\/logo\/1280841622745310893_spartak.jpg"
-		},
-		{
-			"id": "19",
-			"Season": "2012\/2013",
-			"Tour": "19",
-			"GameTime": "2012-12-09 00:00:00",
-			"Opponent": "Анжи",
-			"HomeAway": "H",
-			"GoalAccepted": "0",
-			"GoalScored": [""],
-			"TeamLogo": "http:\/\/img.championat.com\/team\/logo\/12808411201592665498_anji.jpg"
-		},
-		{
-			"id": "20",
-			"Season": "2012\/2013",
-			"Tour": "20",
-			"GameTime": "2012-12-13 00:00:00",
-			"Opponent": "Рубин",
-			"HomeAway": "A",
-			"GoalAccepted": "0",
-			"GoalScored": [""],
-			"TeamLogo": "http:\/\/img.championat.com\/team\/logo\/13413011361438211576_rubin.jpg"
-		},
-		{
-			"id": "21",
-			"Season": "2012\/2013",
-			"Tour": "21",
-			"GameTime": "2013-03-10 00:00:00",
-			"Opponent": "Мордовия",
-			"HomeAway": "H",
-			"GoalAccepted": "0",
-			"GoalScored": [""],
-			"TeamLogo": "http:\/\/img.championat.com\/team\/logo\/12962688631628817952_mordovia.jpg"
-		},
-		{
-			"id": "22",
-			"Season": "2012\/2013",
-			"Tour": "22",
-			"GameTime": "2013-03-17 00:00:00",
-			"Opponent": "Терек",
-			"HomeAway": "A",
-			"GoalAccepted": "0",
-			"GoalScored": [""],
-			"TeamLogo": "http:\/\/img.championat.com\/team\/logo\/13427586471574746678_terek.jpg"
-		},
-		{
-			"id": "23",
-			"Season": "2012\/2013",
-			"Tour": "23",
-			"GameTime": "2013-03-31 00:00:00",
-			"Opponent": "Крылья Советов",
-			"HomeAway": "H",
-			"GoalAccepted": "0",
-			"GoalScored": [""],
-			"TeamLogo": "http:\/\/img.championat.com\/team\/logo\/12808413271715560702_kc.jpg"
-		},
-		{
-			"id": "24",
-			"Season": "2012\/2013",
-			"Tour": "24",
-			"GameTime": "2013-04-07 00:00:00",
-			"Opponent": "Локомотив",
-			"HomeAway": "A",
-			"GoalAccepted": "0",
-			"GoalScored": [""],
-			"TeamLogo": "http:\/\/img.championat.com\/team\/logo\/1280841395651117856_lokomotiv.jpg"
-		},
-		{
-			"id": "25",
-			"Season": "2012\/2013",
-			"Tour": "25",
-			"GameTime": "2013-04-14 00:00:00",
-			"Opponent": "Краснодар",
-			"HomeAway": "H",
-			"GoalAccepted": "0",
-			"GoalScored": [""],
-			"TeamLogo": "http:\/\/img.championat.com\/team\/logo\/128160321641163923_krasnodar.jpg"
-		},
-		{
-			"id": "26",
-			"Season": "2012\/2013",
-			"Tour": "26",
-			"GameTime": "2013-04-21 00:00:00",
-			"Opponent": "Кубань",
-			"HomeAway": "A",
-			"GoalAccepted": "0",
-			"GoalScored": [""],
-			"TeamLogo": "http:\/\/img.championat.com\/team\/logo\/12816032671028415352_kuban.jpg"
-		},
-		{
-			"id": "27",
-			"Season": "2012\/2013",
-			"Tour": "27",
-			"GameTime": "2013-04-28 00:00:00",
-			"Opponent": "Алания",
-			"HomeAway": "H",
-			"GoalAccepted": "0",
-			"GoalScored": [""],
-			"TeamLogo": "http:\/\/img.championat.com\/team\/logo\/12808409991594528082_alania.jpg"
-		},
-		{
-			"id": "28",
-			"Season": "2012\/2013",
-			"Tour": "28",
-			"GameTime": "2013-05-05 00:00:00",
-			"Opponent": "Ростов",
-			"HomeAway": "A",
-			"GoalAccepted": "0",
-			"GoalScored": [""],
-			"TeamLogo": "http:\/\/img.championat.com\/team\/logo\/1280841916679538867_rostov.jpg"
-		},
-		{
-			"id": "29",
-			"Season": "2012\/2013",
-			"Tour": "29",
-			"GameTime": "2013-05-12 00:00:00",
-			"Opponent": "Волга НН",
-			"HomeAway": "H",
-			"GoalAccepted": "0",
-			"GoalScored": [""],
-			"TeamLogo": "http:\/\/img.championat.com\/team\/logo\/13427584201983473859_volga.jpg"
-		},
-		{
-			"id": "30",
-			"Season": "2012\/2013",
-			"Tour": "30",
-			"GameTime": "2013-05-19 00:00:00",
-			"Opponent": "Амкар",
-			"HomeAway": "A",
-			"GoalAccepted": "0",
-			"GoalScored": [""],
-			"TeamLogo": "http:\/\/img.championat.com\/team\/logo\/12808410721160195389_amkar.jpg"
-		}]
-	}]
-} ;
-
-
+var res;
 var BetObj;
 	
 Array.prototype.intersection = function(a) {
@@ -756,13 +113,17 @@ function setChoosenPlayer(scorePlayerId, playerNum) {
 }
 	
 function changeBetPlayersList(obj) {
-	BetObj.setNewScore(obj.value);
+	BetObj.setNewScore(obj.value, 1);
+}
+function changeOpponentScore(obj) {
+	BetObj.setNewScore(obj.value, 0);
 }
 
 function getObjByAction(db, action, fnc) {
-	if (!fnc || typeof (fnc) != 'function') { return undef; }
 	actionId = ArrayIndexOf(db.results, function(obj) { return obj.action == action; });
 	if (actionId > -1) { 
+		if (!fnc || typeof (fnc) != 'function') { return db.results[actionId]; }
+		
 		tId = ArrayIndexOf(db.results[actionId].results, fnc);
 		if (tId > -1) { return db.results[actionId].results[tId] };
 	}
@@ -770,8 +131,7 @@ function getObjByAction(db, action, fnc) {
 	return;
 }
 
-var betObject = function(db, teamId, tourId) {
-	season : "";
+var betObject = function(db, season, teamId, tourId) {
 	team : {};
 	tour : {};
 	tour : {};
@@ -779,8 +139,11 @@ var betObject = function(db, teamId, tourId) {
 	result : {};
 	canvas : {};
 	p_score_rfn : {};
-		
+	changed : false;
+	
 	this.db = db;
+	this.teamId = teamId;
+	this.season = season;
 	var tId;
 
 	this.BetDiv_def = {
@@ -804,14 +167,25 @@ var betObject = function(db, teamId, tourId) {
 	this.tour = getObjByAction(db, 'getchamp', function(obj) { return obj.Tour == tourId; });
 
 	if (teamId == 0) {
-		sthis.result = true;
+		this.result = true;
+		var t_result = getObjByAction(db, 'getresults',  function(obj) { return obj.Tour == tourId });
+		if (t_result) {
+			this.bet = { id: this.tour.id, type: "result", Tour : tourId, GoalAccepted : t_result.GoalAccepted, GoalScored : t_result.GoalScored };
+		} else {
+			this.bet = { id: this.tour.id, type: "result", Tour : tourId, GoalAccepted : 0, GoalScored : [] };
+		} 
 	} else {
 		this.result = false;
 		this.team = getObjByAction(db, 'getteams', function(obj) { return obj.id == teamId; });		
 		this.bet = getObjByAction(db, 'getbets',  function(obj) { return obj.Tour == tourId && obj.Team == teamId });
+		if (!this.bet) {
+			this.bet = { id: 0, type: "bet", Tour : tourId, GoalAccepted : 0, GoalScored : [] };
+		} else {
+			this.bet.type = "bet";
+		}
 	}
 	
-	this.p_score_rfn = $p ( '#BetDiv' ).compile(this.BetDiv_def);
+	//this.p_score_rfn = $p ( '#BetDiv_tmpl' ).compile(this.BetDiv_def);
 
 	this.draw = function () {
 		var dat = {
@@ -826,12 +200,14 @@ var betObject = function(db, teamId, tourId) {
 			dat.goalHome = this.bet.GoalScored.length;
 			dat.goalAway = this.bet.GoalAccepted;
 			dat.goalHomeOnChange = "changeBetPlayersList(this)";
+			dat.goalAwayOnChange = "changeOpponentScore(this)";
 		} else {
 			dat.homeImg = this.tour.TeamLogo;
 			dat.awayImg = "http://img.championat.com/team/logo/1280842143375458742_zenit.jpg";
 			dat.goalHome = this.bet.GoalAccepted;
 			dat.goalAway = this.bet.GoalScored.length;
 			dat.goalAwayOnChange = "changeBetPlayersList(this)";
+			dat.goalHomeOnChange = "changeOpponentScore(this)";
 		};
 		
 		for (i=0; i< this.bet.GoalScored.length;i++) {
@@ -845,54 +221,137 @@ var betObject = function(db, teamId, tourId) {
 			}
 		}
 		
-		$p ( '#BetDiv' ).render( dat, this.p_score_rfn );
+		document.getElementById("BetDiv").innerHTML = document.getElementById("BetDiv_tmpl").innerHTML;
+		$p ( '#BetDiv' ).render( dat, this.BetDiv_def );
+		document.getElementById("BetDiv").style.visibility = "visible";
 	};
 	
-	this.setNewScore = function(goals) {
+	this.setNewScore = function(goals, ourScore) {
 		if (goals < 0) { goals = 0; }
 		if (goals > 15) { window.alert("Смешно!"); goals = 15; }
 		
-		this.bet.GoalScored.length = goals;
-		for (i=0; i<this.bet.GoalScored.length; i++) { if (!this.bet.GoalScored[i]) { this.bet.GoalScored[i] = 0 } }
-		
-		this.draw();
+		this.changed = true;
+
+		if (ourScore) {
+			this.bet.GoalScored.length = goals;
+			for (i=0; i<this.bet.GoalScored.length; i++) { if (!this.bet.GoalScored[i]) { this.bet.GoalScored[i] = 0 } }
+			this.draw();
+		} else {
+			this.bet.GoalAccepted = goals;
+		}	
 	}
 	
 	this.setScorePlayer = function(scorePlayerId, playerNum) {
 		this.bet.GoalScored[scorePlayerId] = playerNum;
+		this.changed = true;
 		this.draw();
 	}
 }
 
+var Season = "2012/2013";
+//var teamId = 4;
+//var tourId = 6;
+
+function onDataLoaded(obj) {
+	res = JSON.parse(obj.responseText);
+
+	var chooseTeamTour_def = {
+		"select.chooseTeam option" : {
+			"team <- team" : {
+				".@value" : "team.id",
+				"." : "team.Name"
+			},
+		},
+		"select.chooseTour option" : {
+			"tour <- tour" : {
+				".@value" : "tour.id",
+				"." : "#{tour.Tour} - #{tour.Opponent} #{tour.GameTime}"
+			}
+		},
+	};
+	
+	var actionId;
+	actionId = ArrayIndexOf(res.results, function(obj) { return obj.action == "getteams"; });
+	var teams = res.results[actionId].results;
+	teams.push({ id : 0, Name : "Set Results" });
+
+	actionId = ArrayIndexOf(res.results, function(obj) { return obj.action == "getchamp"; });
+	
+	$p ( '#chooseTeamTour' ).render({
+					team : teams,
+					tour : res.results[actionId].results, 
+			}, chooseTeamTour_def);
+};
+
+function onBetPrepared(obj) {
+	res = JSON.parse(obj.responseText);
+
+	team_obj = document.getElementById("chooseTeam");
+	teamId = team_obj.options[team_obj.selectedIndex].value;
+	
+	tour_obj = document.getElementById("chooseTour");
+	tourId = tour_obj.options[tour_obj.selectedIndex].value;
+
+	var t_team = getObjByAction(res, 'getteams', function(obj) { return obj.id == teamId; });	
+
+	var msg = document.getElementById("msg");
+	msg.innerHTML = "";
+	msg.innerHTML += ((teamId == 0) ? "Set result" : "Bet for : " + t_team.Name) + "<BR>";
+
+	BetObj = new betObject(res, Season, teamId, tourId);
+	BetObj.draw();
+}
+	
+function prepareBet() {
+	new AjaxRequest(new AjaxObj("/soccer/scores.php", JSON.stringify(
+	{ "requests" : [ { "action" : "getplayers" },
+					 { "action" : "getteams" },
+					 { "action" : "getbets", "season" : Season },
+					 { "action" : "getresults", "season" : Season },
+					 { "action" : "getchamp", "season" : Season },
+					]
+	}), null), "POST", onBetPrepared);
+}
+
+function onSubmitScroeComplete(obj) {
+	var r = JSON.parse(obj.responseText);
+	
+	var bet_res = getObjByAction(r, 'setbet');
+	window.alert("Bet succeed");
+	document.getElementById("BetDiv").style.visibility = "hidden";
+
+}
+
+function submitScore() {
+	//if (BetObj.changed) {
+		BetObj.changed = false;
+		
+		new AjaxRequest(new AjaxObj("/soccer/scores.php", JSON.stringify(
+		{ "requests" : [ { "action" : "setbet", "bet" : {
+								"season" : Season,
+								"Team" : BetObj.teamId,
+								"Tour" : BetObj.bet.Tour,
+								"id" : BetObj.bet.id,
+								"type" : BetObj.bet.type,
+								"GoalAccepted" : BetObj.bet.GoalAccepted,
+								"GoalScored" : BetObj.bet.GoalScored
+								}
+							}
+						]
+		}), null), "POST", onSubmitScroeComplete);
+	//} 
+}
+
 function init() {
   	//choosePlayerBox(document.getElementById("betPlayers"));
-	var msg = document.getElementById("msg");
-	var dat = {};
 	
-	var Season = "2012/2013";
-	var teamId = 5;
-	var tourId = 2;
 	
-	var tId;
-	tId = ArrayIndexOf(res.results, function(obj) { return obj.action == 'getchamp'; });
-	if (tId > -1) { dat.champ = res.results[tId].results };
-	
-	tId = ArrayIndexOf(dat.champ, function(obj) { return obj.Tour == tourId; });
-	if (tId > -1) { dat.tour = dat.champ[tId] };
-	
-	tId = ArrayIndexOf(res.results, function(obj) { return obj.action == 'getteams'; });
-	if (tId > -1) { dat.teams = res.results[tId].results };
-	
-	tId = ArrayIndexOf(dat.teams, function(obj) { return obj.id == teamId; });
-	if (tId > -1) { dat.team = dat.teams[tId]; };
-	
-	msg.innerHTML = "";
-	msg.innerHTML += ((teamId == 0) ? "Set result" : "Bet for : " + dat.team.Name) + "<BR>";
+	new AjaxRequest(new AjaxObj("/soccer/scores.php", JSON.stringify(
+	{ "requests" : [ { "action" : "getteams" },
+					 { "action" : "getchamp", "season" : Season },
+					]
+	}), null), "POST", onDataLoaded);
 
-
-	BetObj = new betObject(res, teamId, tourId);
-	BetObj.draw();
-	
 };
 </script>
 
@@ -982,11 +441,16 @@ function init() {
 }
 </style>
 
+<div id="ChooseTeamTour">
+	Bet for : <select id="chooseTeam" class="chooseTeam"><option></option></select>&nbsp;
+	<select id="chooseTour" class="chooseTour"><option></option></select>
+	<input type="button" name="Bet" onClick="prepareBet()">
+</div>
+
 <div id="msg"></div>
 
-<script>
-</script>
-<div id="BetDiv" class="BetDiv">
+<div id="BetDiv" class="BetDiv" style="visibility: hidden;"></div>
+<div id="BetDiv_tmpl" class="BetDiv" style="visibility: hidden;">
 	<table border=0>
 		<tr>
 			<td colspan="2"><span class="gameDate"></span><span class="gameTour"></span></td>
@@ -1001,11 +465,9 @@ function init() {
 		</tr>
 	</table>
 
-	<div id="betPlayers">Забъют
-		<div class="scorePlayer"></div>
-	</div>
+	<div id="betPlayers">Забъют<div class="scorePlayer"></div></div>
 	
-	<img src="fl-button-bet.png">
+	<img src="fl-button-bet.png" onClick="submitScore();">
 </div>
 
 <div id="choosePlayer"  class="choosePlayer" style="visibility: hidden;"></div>

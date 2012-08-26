@@ -1,4 +1,4 @@
-<html>
+﻿<html>
 <head>
  <!-- Set document compatibility mode to IE8Mode. -->
 <meta http-equiv="X-UA-Compatible" content="IE=8">
@@ -29,10 +29,23 @@ function ArrayIndexOf(a, fnc) {
 	return -1;
 }
 
+function getObjByAction(db, action, fnc) {
+	actionId = ArrayIndexOf(db.results, function(obj) { return obj.action == action; });
+	if (actionId > -1) { 
+		if (!fnc || typeof (fnc) != 'function') { return db.results[actionId]; }
+		
+		tId = ArrayIndexOf(db.results[actionId].results, fnc);
+		if (tId > -1) { return db.results[actionId].results[tId] };
+	}
+	
+	return;
+}
+
 var hint;
+var res;
 
 function onDataLoaded(obj) {
-	var res = JSON.parse(obj.responseText);
+	res = JSON.parse(obj.responseText);
 	var jobj = { tour : [] };
 	
 	teamsId = ArrayIndexOf(res.results, function(obj) { return obj.action == 'getteams'; });
@@ -52,7 +65,7 @@ function onDataLoaded(obj) {
 		
 		for (i=0; i<jobj.teams.length; i++) {
 			var betId = ArrayIndexOf(jobj.bets, function(obj) { return (obj.Tour == jobj.results[j].Tour && obj.Team == jobj.teams[i].id); });
-			if (!jobj.tour[j].team[i]) { jobj.tour[j].team[i] = {}; };
+			if (!jobj.tour[j].team[i]) { jobj.tour[j].team[i] = { id : jobj.teams[i].id }; };
 			if (!teamTotal[i]) { teamTotal[i] = { score1X2 : 0, scoreGoal : 0, scorePlayer : 0, scoreAll : 0 } ; };
 
 			if (betId > -1) {
@@ -73,6 +86,7 @@ function onDataLoaded(obj) {
 				teamTotal[i].scoreAll += jobj.tour[j].team[i].scoreAll;
 
 			} else {
+				jobj.tour[j].team[i].isnotbet = true;
 				jobj.tour[j].team[i].scoreAll = 0;
 				jobj.tour[j].team[i].score1X2  = 0;
 				jobj.tour[j].team[i].scoreGoal = 0;
@@ -113,9 +127,45 @@ function initAll() {
 
 function showHint(obj, tour, team) {
 	var pos = findPos(obj);
+	
+	var bet = getObjByAction(res, 'getbets', function(obj) { return obj.Tour == tour &&  obj.Team == team; });
+	var result = getObjByAction(res, 'getchamp', function(obj) { return obj.Tour == tour });
+	var players = getObjByAction(res, 'getplayers');
 	hint.style.left = (+pos.left) + 'px';
 	hint.style.top = (+obj.clientHeight + +pos.top) + 'px';
-	hint.innerHTML = 
+	if (result && players) {
+		if (bet) {
+			var score = '';
+			for (i = 0; i < bet.GoalScored.length; i++) {
+				var id = ArrayIndexOf(players.results, function(obj) { return obj.id == bet.GoalScored[i] });
+				if (id > -1) {
+					score += '<div class="hintScorePlayer">' + players.results[id].Name + '</div>';
+				}
+			}
+			if (score != '') { score = "Забьют:<BR>" + score; }
+			if (result.HomeAway == 'H') {
+				hint.innerHTML = bet.GoalScored.length + " : " + bet.GoalAccepted + "<BR>" + score;
+			} else {
+				hint.innerHTML = bet.GoalAccepted + " : " + bet.GoalScored.length + "<BR>" + score;
+			}
+		} else {
+			var score = '';
+			for (i = 0; i < result.GoalScored.length; i++) {
+				var id = ArrayIndexOf(players.results, function(obj) { return obj.id == result.GoalScored[i] });
+				if (id > -1) {
+					score += '<div class="hintScorePlayer">' + players.results[id].Name + '</div>';
+				}
+			}
+			if (score != '') { score = "Забили:<BR>" + score; } 
+			if (result.HomeAway == 'H') {
+				hint.innerHTML = result.GoalScored.length + " : " + result.GoalAccepted + "<BR>" + score;
+			} else {
+				hint.innerHTML = result.GoalAccepted + " : " + result.GoalScored.length + "<BR>" + score;
+			}
+		}
+	} else {
+		hint.innerHTML = '? Ставки не было ?';
+	}
 	hint.style.display = 'inline';
 }
 
@@ -160,11 +210,12 @@ function findPos(obj) {
 					"span.tourHomeAway" : function (arg) { return arg.pos < arg.context.results.length ? '(' + arg.context.results[arg.pos].HomeAway + ')' : ''; },
 					"td.teamScores" : {
 						"tourTeam <- tour.team" : {
-							"span.Score" : {
+								".@class+" : function(arg) { return (arg.item.isnotbet) ? " isNotBet" : ""},
+								"span.Score" : {
 								"score <- tourTeam.scores" : {
 									"." : function (arg) { return arg.item ? arg.item : 0; },
 									".@class+" : function (arg) { return (arg.tourTeam.pos == arg.tourTeam.items.length - 1) && (arg.tour.pos < arg.tour.items.length - 2) ? ' gameResult' : ''; },
-									".@onmouseover" : function (arg) { return "showHint(this, " + arg.tour.pos + "," + arg.tourTeam.pos + "	);" },
+									".@onmouseover" : function (arg) { return (arg.tourTeam.item.id) ? "showHint(this, " + arg.tour.item.id + "," + arg.tourTeam.item.id + "	);" : "" },
 									".@onmouseout"  : function (arg) { return "hideHint(this);" }
 								}
 							}
@@ -178,7 +229,7 @@ function findPos(obj) {
 	<style>
 		.Score  {
 			display: inline-block;
-			width: 45px;
+			width: 35px;
 			text-align: center;
 		}
 		
@@ -196,7 +247,7 @@ function findPos(obj) {
 		}
 		
 		.teamName {
-			width: 200px;
+			width: 150px;
 			text-align: center;
 		}
 		
@@ -213,7 +264,7 @@ function findPos(obj) {
 			border-collapse: collapse;
 			font-family: "Lucida Sans Unicode","Lucida Grande",Sans-Serif;
 			font-size: 12px;
-			margin: 20px;
+			margin: 10px;
 			text-align: left;
 		}
 		#one-column-emphasis th {
@@ -237,15 +288,25 @@ function findPos(obj) {
 			color: #333399;
 		}
 		
+		td.isNotBet {
+			background: rgba(255, 64, 0, 0.2);
+		}
+		
 		.hint {
 			display: none;
 			position: absolute;
 			top: 0px;
 			left: 0px;
-			width: 200px;
+			
 			border: 1px solid #c93;
-			padding: 10px 12px;
-			background: #ffc url(pointer.gif) no-repeat -10px 5px;
+			padding: 5px 6px;
+			background: #ffc;
+			font-family : Verdana;
+			font-size : 12px;
+		}
+		
+		.hintScorePlayer {
+			margin: 0px 0px 0px 15px;
 		}
 
 	</style>
