@@ -41,7 +41,7 @@ function GetScore1X2(Bet, Result) {
 	var res = Result.GoalAccepted - Result.GoalScored.length == 0 ? 0 : (Result.GoalAccepted - Result.GoalScored.length) / Math.abs(Result.GoalAccepted - Result.GoalScored.length);
 	var bet = Bet.GoalAccepted - Bet.GoalScored.length == 0 ? 0 : (Bet.GoalAccepted - Bet.GoalScored.length) / Math.abs(Bet.GoalAccepted - Bet.GoalScored.length);
 	if (res == bet) {
-		return 1;
+		return 0.5;
 	}
 	return 0;
 };
@@ -53,7 +53,8 @@ function GetScoreExactGoals(Bet, Result) {
 
 // Угадали всё
 function GetScoreExactProvision(Bet, Result) {
-	return (Bet.GoalAccepted == Result.GoalAccepted && (getIntersection(Bet.GoalScored, Result.GoalScored).length == Result.GoalScored.length)) ? 5 : 0;
+	return (Bet.GoalAccepted == Result.GoalAccepted && 
+		(getIntersection(Bet.GoalScored, Result.GoalScored).length == Result.GoalScored.length == Bet.GoalScored.length)) ? 5 : 0;
 }
 
 

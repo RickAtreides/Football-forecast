@@ -62,8 +62,12 @@ function onDataLoaded(obj) {
 					jobj.tour[j].team[i].scoreGoal = 0;
 					jobj.tour[j].team[i].scorePlayer = 0;
 				} else {
-					jobj.tour[j].team[i].score1X2  = GetScore1X2(jobj.bets[betId], jobj.results[j]);
 					jobj.tour[j].team[i].scoreGoal = GetScoreExactGoals(jobj.bets[betId], jobj.results[j]);
+					if (jobj.tour[j].team[i].scoreGoal == 0) {
+						jobj.tour[j].team[i].score1X2 = GetScore1X2(jobj.bets[betId], jobj.results[j]);
+					} else {
+						jobj.tour[j].team[i].score1X2 = 0;
+					}
 					jobj.tour[j].team[i].scorePlayer = GetPlayersGoalScored(jobj.bets[betId], jobj.results[j]);
 				}
 
