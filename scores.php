@@ -105,7 +105,7 @@
 		$resArray = Array();
 		
 		while ($row = $res->fetchArray(SQLITE3_ASSOC)) {
-			foreach ($row as $k => $v) { $row[$k] =  iconv('windows-1251', 'utf-8', $v); if ($k == 'GoalScored') { $row[$k] = explode(';', $row[$k]); } }
+			foreach ($row as $k => $v) { $row[$k] =  iconv('windows-1251', 'utf-8', $v); if ($k == 'GoalScored' && $row[$k] != "") { $row[$k] = explode(';', $row[$k]); } }
 			array_push($resArray, $row);
 		}	
 		
